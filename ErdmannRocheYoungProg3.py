@@ -16,17 +16,17 @@ class Player(enum.Enum):
 
 #Added by Jude
 class King():
-    def __init__(self, color, piece, kings):
+    def __init__(self, color, checker, kings):
         self.color = color
-        self.piece = piece
+        self.checker = checker
         self.kings = kings
     
-    def get_crowned_king(self, piece):
-        if self.piece is not in kings
-            kings.append(self.piece)
+    def get_crowned_king(self, checker):
+        if self.checker is not in kings
+            kings.append(self.checker)
             return kings
-    def add_king_moves(self, piece):
-        assert(self.piece is in kings)
-        self.add_backwards_capabilities(piece)
+    def add_king_moves(self, checker):
+        assert(self.checker is in kings)
+        self.add_backwards_capabilities(checker)
     
-    def add_backwards_capabilities(self, piece):
+    def add_backwards_capabilities(self, checker):
