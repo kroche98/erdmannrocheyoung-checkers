@@ -28,4 +28,5 @@ class King():
     def add_king_moves(self, piece):
         assert(self.piece is in kings)
         self.add_backwards_capabilities(piece)
-    def add_backwards_capabilities(self):
+    
+    def add_backwards_capabilities(self, piece):
