@@ -5,7 +5,7 @@
 
 import enum
 
-
+#
 class Player(enum.Enum):
     black = 1
     red = 2
@@ -14,24 +14,9 @@ class Player(enum.Enum):
     def other(self):
         return Player.black if self == Player.red else Player.red
 
-#Added by Jude
-class King():
-    def __init__(self, color, checker, kings):
-        self.color = color
-        self.checker = checker
-        self.kings = kings
-    
-    def get_crowned_king(self, checker):
-        if self.checker is not in kings
-            kings.append(self.checker)
-            return kings
-    def add_king_moves(self, checker):
-        assert(self.checker is in kings)
-        self.add_backwards_capabilities(checker)
-    
-    def add_backwards_capabilities(self, checker):
 
-#What I've been working on
+
+#Move class largely by Jude
 class Move():
     def __init__(self, left_right, checker, fowards_backwards):
         self.checker = checker
@@ -70,6 +55,7 @@ class Move():
         self.checker.square = [self.checker.row, self.checker.col]
         return (self.checker.square)
 
+#GameState class largely by Jude
 class GameState():
     def __init__(self, board, next_player, move):
         self.board = board
