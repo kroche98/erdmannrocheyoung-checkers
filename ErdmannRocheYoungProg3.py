@@ -9,7 +9,7 @@ import enum
 from collections import namedtuple
 from math import fabs
 
-
+#
 class Player(enum.Enum):
     red = 1
     white = 2
@@ -128,7 +128,7 @@ class Board:
 class Move(namedtuple('Move', 'sq_from sq_to is_jump')):
     pass
 
-
+# By Jude and Kevin
 class Action():
     """Any action a player can play on a turn.
     Either is_resign will be set, or move will be set."""
@@ -146,7 +146,7 @@ class Action():
     def resign(cls):
         return Action(is_resign=True)
 
-
+# By Jude and Kevin
 class GameState():
     def __init__(self, board, next_player, move):
         self.board = board
@@ -186,6 +186,8 @@ class GameState():
         pass
 
 """
+# By Jude
+# TODO Some of this logic belongs in the is_valid() function
     def move_checker(self, checker, move_fowards_backwards, move_left_right):
         if move_fowards_backwards == 'backwards':
             assert (checker.is_king())
