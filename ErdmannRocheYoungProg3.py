@@ -9,7 +9,7 @@ import enum
 from collections import namedtuple
 from math import fabs
 
-#
+#By Patrick
 class Player(enum.Enum):
     red = 1
     white = 2
@@ -18,7 +18,7 @@ class Player(enum.Enum):
     def other(self):
         return Player.red if self == Player.red else Player.white
 
-
+#By Kevin
 class Square(namedtuple('Square', 'row col')):
     def neighbors_above(self):
         return [
@@ -186,8 +186,8 @@ class GameState():
         pass
 
 """
-# By Jude
 # TODO Some of this logic belongs in the is_valid() function
+# By Jude
     def move_checker(self, checker, move_fowards_backwards, move_left_right):
         if move_fowards_backwards == 'backwards':
             assert (checker.is_king())
@@ -220,7 +220,7 @@ class GameState():
         self.checker.square = [self.checker.row, self.checker.col]
         return (self.checker.square)
 """
-
+#The Rest is by Kevin
 COLS = 'ABCDEFGH'
 PIECE_TO_CHAR = {
     None: ' . ',
