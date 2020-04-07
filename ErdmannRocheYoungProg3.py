@@ -7,7 +7,6 @@
 import copy
 import enum
 from collections import namedtuple
-from math import fabs
 
 #By Patrick
 class Player(enum.Enum):
@@ -31,6 +30,25 @@ class Square(namedtuple('Square', 'row col')):
             Square(self.row - 1, self.col - 1),
             Square(self.row - 1, self.col + 1),
         ]
+    
+    def all_neighbors(self):
+        return self.neighbors_above() + self.neighbors_below()
+    
+    def jump_neighbors_above(self):
+        return [
+            Square(self.row + 2, self.col - 2),
+            Square(self.row + 2, self.col + 2)
+        ]
+    
+    def jump_neighbors_below(self):
+        return [
+            Square(self.row - 2, self.col - 2),
+            Square(self.row - 2, self.col + 2),
+        ]
+    
+    def all_jump_neighbors(self):
+        return self.neighbors_above() + self.neighbors_below()
+
 
 
 class IllegalMoveError(Exception):
@@ -103,7 +121,7 @@ class Board:
             1 <= square.col <= self.board_size
     
     def get(self, square):
-        """Return the content of a square on the board.
+        """Return the contents of a square on the board.
 
         Returns None if the square is empty, or a Checker if
         there is a checker on that square.
@@ -168,9 +186,89 @@ class GameState():
         board.init_board()
         return GameState(board, Player.red, None)
         
-    def is_valid_move(self, move):
+    def is_valid_move(self, move_seq):
+        """Return a boolean indicating whether the given move sequence is legal
+        
+        Assumes that move_seq is an array of Move objects"""
+
+        # if there are multiple moves in the sequence, they must all be jumps
+        if len(move_seq) > 1:
+            if len(set(map(lambda m: m.is_jump, move_seq))) > 1:
+                return False
+
+        for sq_from, sq_to, is_jump in move_seq:
+            # check that the first square in the move sequence
+            # has a checker of the correct color
+            if not self.board.on_board(sq_from):
+                return False
+            checker = self.board.get(sq_from)
+            if checker is None:
+                return False
+            if checker.player != self.next_player:
+                return False
+            
+            # check that the destination square is unoccupied
+            if not self.board.on_board(sq_to):
+                return False
+            if self.board.get(sq_to) is not None:
+                return False
+            
+            # if it is not a jump, check that the destination square is reachable
+            if not is_jump:
+                if checker.is_king:
+                    reachable_sqs = sq_from.all_neighbors()
+                elif checker.player == Player.red:
+                    reachable_sqs = sq_from.neighbors_above()
+                else:
+                    reachable_sqs = sq_from.neighbors_below()
+                if sq_to not in reachable_sqs:
+                    return False
+            
+            # if it's a jump, check that the destination square
+            # is reachable from the source square and that the jump is legal
+            else:
+                if (sq_from.row - sq_to.row)**2 + (sq_from.col - sq_to.col)**2 != 8:
+                    return False
+                sq_btwn = Square((sq_from.row + sq_to.row)//2, (sq_from.col + sq_to.col)//2)
+                jumped_checker = self.board.get(sq_btwn)
+                if jumped_checker is None:
+                    return False
+                if jumped_checker.player != self.next_player.other:
+                    return False
+        
+        # finally, enforce the rule that all possible jumps must be taken
+        temp_board = copy.deepcopy(self.board)
+        for move in move_seq:
+            if temp_board.is_jump_possible() and not move.is_jump:
+                return False
+            temp_board.move_checker(*move)
+        if temp_board.is_jump_possible():
+            return False
+
         return True
-    
+
+    def is_jump_possible(self):
+        # TODO: there's code duplication between here and is_valid_move()
+        for square, checker in self.board.get_pieces(self.next_player):
+            if checker.is_king:
+                reachable_sqs = square.all_jump_neighbors()
+            elif checker.player == Player.red:
+                reachable_sqs = square.jump_neighbors_above()
+            else:
+                reachable_sqs = square.jump_neighbors_below()
+            for candidate_sq in reachable_sqs:
+                if not self.board.is_on_board(candidate_sq):
+                    continue
+                if self.board.get(candidate_sq) is None:
+                    sq_btwn = Square((square.row + candidate_sq.row)//2, (square.col + candidate_sq.col)//2)
+                    jumped_checker = self.board.get(sq_btwn)
+                    if jumped_checker is None:
+                        continue
+                    elif jumped_checker.player == self.next_player.other:
+                        return True
+        return False
+
+
     def is_over(self):
         if self.last_move is None:
             return False
@@ -180,9 +278,18 @@ class GameState():
         # return len(legal_moves) > 0
 
     def legal_moves(self):
+        # TODO
+        # basic idea: create a list of candidate move sequences
+        # by looping through the player's pieces and seeing
+        # what legal moves each one had
+        # some cleverness is required to come up with the double jump moves
+        # once you have candidate_moves you could just do
+        # return list(filter(lambda m: self.is_valid(m), candidate_moves))
+        # then for the bot, just call legal_moves and pick a random one
         pass
 
     def winner(self):
+        # TODO
         pass
 
 """
@@ -261,7 +368,7 @@ def move_from_coords(coords):
 
     moves = []
     for sq_from, sq_to in zip(squares[:-1], squares[1:]):
-        is_jump = fabs(sq_from.row - sq_to.row) == 2
+        is_jump = (sq_from.row - sq_to.row)**2 == 4
         moves.append(Move(sq_from, sq_to, is_jump))
 
     return moves
