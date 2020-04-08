@@ -348,13 +348,17 @@ class CheckerBot:
         self.game = new_state
 
     def choose_move(self):
-
+        
         if len(self.single_jumps) != 0:
             rand_move = random.randrange(0, len(self.single_jumps)-1)
+            print("Robot picks move:")
+            print(self.single_jumps[rand_move])
             return self.single_jumps[rand_move]
 
-        elif len(self.moves) != 0:
+        if len(self.moves) != 0:
             rand_move = random.randrange(0, len(self.moves)-1)
+            print("Robot picks move:")
+            print(self.moves[rand_move])
             return self.moves[rand_move]
 
         else:
@@ -373,15 +377,18 @@ class CheckerBot:
         for square, checker in self.game.board.get_pieces(self.game.next_player):
             # check for single moves
             for n in square.all_neighbors():
-                new_move = [Move(square, n, checker.is_king)]
+                new_move = [Move(square, n, False)]
                 if self.game.is_valid_move(new_move):
                     self.moves.append(new_move)
 
             # check for jumps
             for j in square.all_jump_neighbors():
-                new_jump = [Move(square, j, checker.is_king)]
+                new_jump = [Move(square, j, True)]
+                print(new_jump)
                 if self.game.is_valid_move(new_jump):
-                    self.moves.append(new_jump)
+                    print("Jump avail")
+                    print(new_jump)
+                    self.single_jumps.append(new_jump)
 
 
 # end checker bot class
