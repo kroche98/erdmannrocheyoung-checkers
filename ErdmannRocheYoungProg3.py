@@ -4,6 +4,7 @@
 # Dr. Ed Kovach
 
 
+import random
 import copy
 import enum
 from collections import namedtuple
@@ -335,8 +336,29 @@ class CheckerBot:
         self.single_jumps = []
         self.multi_jumps = []
 
+    def print_moves(self):
+        print("single move")
+        for i in self.moves:
+            print(i)
+        print("Jumps")
+        for j in self.single_jumps:
+            print(j)
+
     def update_board(self, new_state):
         self.game = new_state
+
+    def choose_move(self):
+
+        if len(self.single_jumps) != 0:
+            rand_move = random.randrange(0, len(self.single_jumps)-1)
+            return self.single_jumps[rand_move]
+
+        elif len(self.moves) != 0:
+            rand_move = random.randrange(0, len(self.moves)-1)
+            return self.moves[rand_move]
+
+        else:
+            print("No more moves")
 
     # by Patrick and Kevin
     def legal_moves(self):
@@ -349,15 +371,17 @@ class CheckerBot:
         # return list(filter(lambda m: self.is_valid(m), candidate_moves))
         # then for the bot, just call legal_moves and pick a random one
         for square, checker in self.game.board.get_pieces(self.game.next_player):
-            print(square_to_chords(square))
-            print(square)
-            for n in square.neighbors_above():
-                new_move = [Move(square, n, False)]
-                print(new_move)
+            # check for single moves
+            for n in square.all_neighbors():
+                new_move = [Move(square, n, checker.is_king)]
                 if self.game.is_valid_move(new_move):
-                    print("is valid!")
-                else:
-                    print("is not valid...")
+                    self.moves.append(new_move)
+
+            # check for jumps
+            for j in square.all_jump_neighbors():
+                new_jump = [Move(square, j, checker.is_king)]
+                if self.game.is_valid_move(new_jump):
+                    self.moves.append(new_jump)
 
 
 # end checker bot class
@@ -436,10 +460,7 @@ def main():
     print(instructions)
     robot = CheckerBot()
 
-
     while not game.is_over():
-        robot.update_board(game)
-        robot.legal_moves()
         # print(chr(27) + "[2J")
         print_board(game.board)
         if game.next_player == Player.red:
@@ -447,9 +468,12 @@ def main():
             human_choice = move_from_coords(human_choice.strip())
             action = Action.play(human_choice)
         else:
-            human_choice = input('-- ')
-            human_choice = move_from_coords(human_choice.strip())
-            action = Action.play(human_choice)
+            robot.update_board(game)
+            robot.legal_moves()
+            robot.print_moves()
+            robot_choice = robot.choose_move()
+            action = Action.play(robot_choice)
+            print(action)
         # print_move(game.next_player, move)
         game = game.apply_action(action)
 
