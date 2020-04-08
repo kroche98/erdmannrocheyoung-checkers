@@ -16,7 +16,7 @@ class Player(enum.Enum):
 
     @property
     def other(self):
-        return Player.red if self == Player.red else Player.white
+        return Player.white if self == Player.red else Player.red
 # end player class
 
 
