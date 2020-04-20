@@ -126,7 +126,7 @@ class Jump(namedtuple('Jump', 'sq_from sq_to is_capture')):
     pass
 
 
-# By Jude and Kevin
+# By Kevin and Jude
 class Move():
     """Any action a player can play on a turn.
     Either is_resign will be set, or jumps will be set."""
@@ -147,7 +147,7 @@ class Move():
 # end Move class
 
 
-# By Jude and Kevin
+# By Kevin and Jude
 class GameState():
     def __init__(self, board, next_player, move):
         self.board = board
