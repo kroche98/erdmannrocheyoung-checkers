@@ -126,7 +126,7 @@ class Jump(namedtuple('Jump', 'sq_from sq_to is_capture')):
     pass
 
 
-# By Kevin and Jude
+# By Kevin
 class Move():
     """Any action a player can play on a turn.
     Either is_resign will be set, or jumps will be set."""
