@@ -41,14 +41,14 @@ class Board:
             for col in range(1, self.board_size + 1):
                 self._grid[Square(row, col)] = None
         black_squares = [
-            (1, 1), (1, 3), (1, 5), (1, 7),
-            (2, 2), (2, 4), (2, 6), (2, 8),
-            (3, 1), (3, 3), (3, 5), (3, 7)
-        ]
-        white_squares = [
             (6, 2), (6, 4), (6, 6), (6, 8),
             (7, 1), (7, 3), (7, 5), (7, 7),
             (8, 2), (8, 4), (8, 6), (8, 8),
+        ]
+        white_squares = [
+            (1, 1), (1, 3), (1, 5), (1, 7),
+            (2, 2), (2, 4), (2, 6), (2, 8),
+            (3, 1), (3, 3), (3, 5), (3, 7)
         ]
         for sq in black_squares:
             self._grid[Square(*sq)] = Checker(Player.black)
@@ -80,10 +80,10 @@ class Board:
         # King the piece if appropriate
         move_crowns_checker = False
         if not checker.is_king:
-            if checker.player == Player.black and square_to.row == self.board_size:
+            if checker.player == Player.white and square_to.row == self.board_size:
                 checker.make_king()
                 move_crowns_checker = True
-            if checker.player == Player.white and square_to.row == 1:
+            if checker.player == Player.black and square_to.row == 1:
                 checker.make_king()
                 move_crowns_checker = True
         
@@ -197,9 +197,9 @@ class GameState():
             if checker.is_king:
                 reachable_sqs = sq_from.all_neighbors()
             elif checker.player == Player.black:
-                reachable_sqs = sq_from.neighbors_above()
-            else:
                 reachable_sqs = sq_from.neighbors_below()
+            else:
+                reachable_sqs = sq_from.neighbors_above()
             if sq_to not in reachable_sqs:
                 return False
         
@@ -209,9 +209,9 @@ class GameState():
             if checker.is_king:
                 reachable_sqs = sq_from.all_jump_neighbors()
             elif checker.player == Player.black:
-                reachable_sqs = sq_from.jump_neighbors_above()
-            else:
                 reachable_sqs = sq_from.jump_neighbors_below()
+            else:
+                reachable_sqs = sq_from.jump_neighbors_above()
             if sq_to not in reachable_sqs:
                 return False
             
@@ -303,9 +303,9 @@ class GameState():
             if checker.is_king:
                 reachable_sqs = square.all_jump_neighbors()
             elif checker.player == Player.black:
-                reachable_sqs = square.jump_neighbors_above()
-            else:
                 reachable_sqs = square.jump_neighbors_below()
+            else:
+                reachable_sqs = square.jump_neighbors_above()
             
             for candidate_sq in reachable_sqs:
                 jump = Jump(sq_from=square, sq_to=candidate_sq, is_capture=True)
