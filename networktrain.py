@@ -5,12 +5,14 @@ from keras.layers import Conv2D, MaxPooling2D
 
 #model.add(Dense(activation = 'relu'))
 np.random.seed(123)
+#model to predict moves
+model = Sequential()
 #Load the game data (Kevin's Monte Carlo bot)
 X = np.load('../generated_games/features-40k.npy')
 Y = np.load('../generated_games.features-40k.npy')
 samples = X.shape[0]
 size = 8
-input_shape(size, size, 1)
+input_shape = (size, size, 1)
 #Put input into vectors of size 64 (since we have an 8x8 board)
 X = X.reshape(samples, size, size, 1)
 Y = Y.reshape(samples, size, size, 1)
@@ -23,12 +25,6 @@ Y_train, Y_test = Y[:train_samples], Y[train_samples:]
 #
 model.add(MaxPooling2D(pool_size = (2, 2)))
 
-
-
-
-
-#Model to predict moves
-model = Sequential()
 #Use the RELU activation function
 model.add(Conv2D(filters = 48, kernel_size = (3,3), activation = 'relu', padding = 'same', input_shape = input_shape))
 #Add second layer: page 136
@@ -40,3 +36,4 @@ model.fit(X_train, Y_train, batch_size = 64, epochs = 15, verbose = 1, validatio
 score = model.evaluate(X_test, Y_test, verbose = 0)
 print('Test loss: ', score[0])
 print('Test accuracy:', score[1])
+#Page 145
