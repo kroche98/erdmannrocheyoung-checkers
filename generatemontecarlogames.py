@@ -1,22 +1,23 @@
 import argparse
 import numpy as np
-from Encoder import get_encoder_by_name
+from Encoder import OnePlaneEncoder
 from checkerboard import GameState
 from utils import print_board, print_move
-#Import Kevin's MonteCarlo tree search
+from Agents.monte_carlo_checker_bot import MonteCarloCheckerBot
 
 
 def generate_game(rounds, max_moves, temperature):
     boards, moves = [], []
 
-    encoder = get_encoder_by_name('one-plane')
+    encoder = OnePlaneEncoder()
 
     game = GameState.new_game()
 
-    bot = monte_carlo_bot(rounds, temperature)
+    #bot = MonteCarloCheckerBot(rounds, temperature)
+    bot = MonteCarloCheckerBot()
 
     num_moves = 0
-    while not game.is_over():
+    while not game.winner() is False:
         print_board(game.board)
         move = bot.select_move(game)
         if move.is_play:
@@ -35,13 +36,13 @@ def generate_game(rounds, max_moves, temperature):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--board-size', '-b-', type = int, default=9)
+    parser.add_argument('--board-size', '-b-', type = int, default=8)
     parser.add_argument('--rounds', '-r', type = int, default = 1000)
     parser.add_argument('--temperature', '-t', type = float, default = 0.8)
     parser.add_argument('--max-moves', '-m', type = int, default = 40, help = 'Max moves per game.')
     parser.add_argument('--num-games', '-n', type = int, default = 10)
     parser.add_argument('--board-out')
-    parser.add-argument('--move-out')
+    #parser.add-argument('--move-out')
 
     args = parser.parse_args()
     xs = []
