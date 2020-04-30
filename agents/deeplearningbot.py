@@ -1,21 +1,25 @@
 import numpy as np
-from Agents.agent import agent
+from Agents.agent import Agent
 from Encoder import OnePlaneEncoder
 from checkerboard import Move, GameState
+from keras import Sequential
 
 class DeepLearningAgent(Agent):
-    def __init__(self, model, encoder):
-        self.model = model
+    #def __init__(self, model, encoder):
+    def __init__(self, encoder):
+        #self.model = model
+        self.model = Sequential()
         self.encoder = encoder
     
-    def predict(self, game_state):
-        encoded_state = self.encoder.encode(game_state)
+    def predict(self, GameState):
+        encoded_state = self.encoder.encode(GameState)
         input_tensor = np.array([encoded_state])
         return self.model.predict(input_tensor)[0]
 
-    def select_move(self, game_state):
-        num_moves = self.encoder.board_width * self.encoder.board_height
-        move_probs = self.predict(game_state)
+    def select_move(self, GameState):
+        #num_moves = self.encoder.board_width * self.encoder.board_height
+        num_moves = 8 * 8
+        move_probs = self.predict(GameState)
 
         move_probs = move_probs ** 3
         eps = 1e-6
@@ -28,10 +32,3 @@ class DeepLearningAgent(Agent):
         #Pick the highest ranked move
         choice = max(ranked_moves)
         return Move.play(candidates[choice])
-        '''
-        for square_idx in ranked_moves:
-            square_from = self.encoder.decode_square_index(square_idx)
-            square_to = self.encoder.decode_square_index(square_idx)
-            if game_state.is_valid_move(Move.play(square_from, square_to)
-                return Move.play(
-                    '''
