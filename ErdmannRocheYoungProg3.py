@@ -8,6 +8,7 @@ from checkerboard import GameState
 import utils
 
 from agents.dumb_checker_bot import DumbCheckerBot
+from agents.monte_carlo_checker_bot import MonteCarloCheckerBot
 
 def play_game(player_1, player_2):
     game = GameState.new_game()
@@ -42,7 +43,7 @@ def play_game(player_1, player_2):
 
 def main():
     player_1 = DumbCheckerBot()
-    player_2 = DumbCheckerBot()
+    player_2 = MonteCarloCheckerBot()
 
     play_game(player_1, player_2)
 

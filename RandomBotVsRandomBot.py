@@ -1,53 +1,54 @@
-# Note: before running, we need to download the opponent's bot
-from BangsPepinCampbellRandomBot import RandomBot
-from REY_Bot import REY_Bot
+from REY_Bot import REY_RandomBot
+from REY_Bot import REY_MonteCarloBot
 import os
 import time
 
 class Controller:
 
-  def __init__(self, blackBot, redBot):
-    self.redBot = redBot
-    self.blackBot = blackBot
+    def __init__(self, black_bot, red_bot):
+        self.red_bot = red_bot
+        self.black_bot = black_bot
+        self.winner = None
 
-  def runGame(self):
+    def do_turn(self, mover, reciever):
+        if self.winner != None:
+            return
+        
+        move_is_valid = False
 
-    while True:
-        blackMove = self.blackBot.makemove()
-        print(f"black: {blackMove}")
+        while not move_is_valid:
+            move = mover.make_move()
 
-        if blackMove == "resign":
-            self.winner = self.redBot
-            break
+            if move == "resign":
+                self.winner = reciever
+                break
 
-        self.redBot.receiveMove(blackMove)
+            move_is_valid = reciever.receive_move(move)
+            if not move_is_valid:
+                mover.undo_last_move()
 
-        # os.system("cls")
-        print(self.blackBot.board)
-        self.redBot.print_board()
-        time.sleep(0.1)
+        os.system("cls")
+        print(self.black_bot.get_board_str())
 
-        redMove = self.redBot.makemove()
-        print(F"red: {redMove}")
+    def run_game(self):
+        print(self.black_bot.get_board_str())
 
-        if redMove == "resign":
-            self.winner = self.blackBot
-            break
+        while self.winner == None:
+            self.do_turn(self.black_bot, self.red_bot)
+            self.do_turn(self.red_bot, self.black_bot)
 
-        self.blackBot.receiveMove(redMove)
+        if self.winner == self.red_bot:
+            print("Red wins!")
+        else:
+            print("Black wins!")
 
-        # os.system("cls")
-        print(self.blackBot.board)
-        self.redBot.print_board()
-        time.sleep(0.1)
-
-    #print winner
+        input("Press a key to close")
 
 def main():
-    redBot = REY_Bot("red", None)
-    blackBot = RandomBot("black", None)
-    controller = Controller(blackBot, redBot)
-    controller.runGame()
+    red_bot = REY_RandomBot("red")
+    black_bot = REY_MonteCarloBot("black")
+    controller = Controller(black_bot, red_bot)
+    controller.run_game()
 
 if __name__ == "__main__":
     main()

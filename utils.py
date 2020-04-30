@@ -12,9 +12,11 @@ __all__ = [
 _COLS = 'ABCDEFGH'
 
 _PIECE_TO_CHAR = {
-    None: ' . ',
-    Player.black: ' x ',
-    Player.white: ' o ',
+    None: '   ',
+    (Player.black, True): ' B ',
+    (Player.black, False): ' b ',
+    (Player.white, True): ' R ',
+    (Player.white, False): ' r '
 }
 
 _PLAYER_TO_NAME = {
@@ -22,16 +24,24 @@ _PLAYER_TO_NAME = {
     Player.white: 'White'
 }
 
-def print_board(board):
+def board_repr(board):
+    lines = []
     for row in range(board.board_size, 0, -1):
         line = []
         for col in range(1, board.board_size + 1):
-            piece = board.get(Square(row=row, col=col))
-            if piece:
-                piece = piece.player
-            line.append(_PIECE_TO_CHAR[piece])
-        print('%d %s' % (row, ''.join(line)))
-    print('   ' + '  '.join(_COLS[:board.board_size]))
+            if (row + col) % 2 == 1:
+                line.append('███')
+            else:
+                piece = board.get(Square(row=row, col=col))
+                if piece:
+                    piece = (piece.player, piece.is_king)
+                line.append(_PIECE_TO_CHAR[piece])
+        lines.append('%d %s' % (row, ''.join(line)))
+    lines.append('   ' + '  '.join(_COLS[:board.board_size]))
+    return '\n'.join(lines)
+
+def print_board(board):
+    print(board_repr(board))
 
 def print_move(player, move):
     if move.is_resign:

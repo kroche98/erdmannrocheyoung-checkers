@@ -117,7 +117,7 @@ class Board:
 
     def __deepcopy__(self, memodict={}):
         copied = Board(self.board_size)
-        copied._grid = copy.copy(self._grid)
+        copied._grid = copy.deepcopy(self._grid)
         return copied
 # end Board class
 
