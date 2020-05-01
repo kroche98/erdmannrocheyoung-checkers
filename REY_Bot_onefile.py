@@ -438,7 +438,7 @@ class Agent:
     def select_move(self, game_state):
         raise NotImplementedError
 
-
+#By Patrick
 class DumbCheckerBot(Agent):
     def select_move(self, game_state):
         candidate_moves = game_state.legal_moves()
@@ -448,7 +448,7 @@ class DumbCheckerBot(Agent):
         return Move.play(candidate_moves[choice])
 # end DumbCheckerBot class
 
-
+#By Kevin
 class MonteCarloCheckerBot(Agent):    
     def select_move(self, game_state):
         candidate_moves = game_state.legal_moves()
