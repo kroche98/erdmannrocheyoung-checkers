@@ -32,7 +32,7 @@ class Encoder:
 
 class OnePlaneEncoder(Encoder):
     def __init__(self, board_size = 8):
-        self.board_width, self.board_height = board_size
+        self.board_width, self.board_height = board_size, board_size
         self.num_planes = 1
 
     def name(self):
@@ -47,7 +47,7 @@ class OnePlaneEncoder(Encoder):
                 checker = GameState.board.get(s)
                 if checker is None:
                     continue
-                if checker.color == next_player:
+                if checker.player == next_player:
                     if checker.is_king:
                         board_matrix[0, r, c] = 2
                     else:
@@ -59,8 +59,8 @@ class OnePlaneEncoder(Encoder):
                         board_matrix[0, r, c] = -1
         return board_matrix
 
-    def encode_checker(self, checker):
-        return self.board_width * (Square.row - 1) + (Square.col - 1)
+    def encode_square(self, square):
+        return self.board_width * (square.row - 1) + (square.col - 1)
 
     def decode_square_index(self, index):
         row = index // 8

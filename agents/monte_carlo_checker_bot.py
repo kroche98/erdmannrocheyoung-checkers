@@ -13,8 +13,8 @@ class MonteCarloCheckerBot(Agent):
         dummy_bot = DumbCheckerBot()
         for i, move in enumerate(candidate_moves):
             total_score = 0
-            num_rollouts = 100
-            rollout_depth = 5
+            num_rollouts = 64
+            rollout_depth = 4
             for _ in range(num_rollouts):
                 temp_state = deepcopy(game_state)
                 temp_state = temp_state.apply_move(Move.play(move))

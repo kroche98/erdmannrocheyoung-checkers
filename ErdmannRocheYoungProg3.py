@@ -9,6 +9,7 @@ import utils
 
 from agents.dumb_checker_bot import DumbCheckerBot
 from agents.monte_carlo_checker_bot import MonteCarloCheckerBot
+from agents.deep_learning_bot import DeepLearningAgent
 
 def play_game(player_1, player_2):
     game = GameState.new_game()

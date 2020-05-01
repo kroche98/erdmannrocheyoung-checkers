@@ -1,15 +1,18 @@
 import numpy as np
-from Agents.agent import Agent
+from agents.agent import Agent
 from Encoder import OnePlaneEncoder
 from checkerboard import Move, GameState
 from keras import Sequential
+import pickle
 
 class DeepLearningAgent(Agent):
     #def __init__(self, model, encoder):
-    def __init__(self, encoder):
+    def __init__(self):
         #self.model = model
-        self.model = Sequential()
-        self.encoder = encoder
+        #self.model = Sequential()
+        with open('model.pkl', 'rb') as file:
+            self.model = pickle.load(file)
+        self.encoder = OnePlaneEncoder()
     
     def predict(self, GameState):
         encoded_state = self.encoder.encode(GameState)
@@ -27,7 +30,7 @@ class DeepLearningAgent(Agent):
         move_probs = np.clip(move_probs, eps, 1-eps)
         move_probs = move_probs / np.sum(move_probs)
 
-        candidates = np.arrange(num_moves)
+        candidates = np.arange(num_moves)
         ranked_moves = np.random.choice(candidates, num_moves, replace = False, p = move_probs)
         #Pick the highest ranked move
         choice = max(ranked_moves)

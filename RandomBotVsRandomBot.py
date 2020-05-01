@@ -1,5 +1,6 @@
-from REY_Bot import REY_RandomBot
-from REY_Bot import REY_MonteCarloBot
+# from REY_Bot import REY_RandomBot
+# from REY_Bot import REY_MonteCarloBot
+from REY_Bot_onefile import REY_MonteCarloBot
 import os
 import time
 
@@ -45,7 +46,7 @@ class Controller:
         input("Press a key to close")
 
 def main():
-    red_bot = REY_RandomBot("red")
+    red_bot = REY_MonteCarloBot("red")
     black_bot = REY_MonteCarloBot("black")
     controller = Controller(black_bot, red_bot)
     controller.run_game()
