@@ -5,7 +5,7 @@ from checkerboard import GameState
 from utils import print_board, print_move
 from agents.monte_carlo_checker_bot import MonteCarloCheckerBot
 
-
+#By Kevin and Jude
 def generate_game(rounds, max_moves, temperature):
     boards, moves = [], []
 
