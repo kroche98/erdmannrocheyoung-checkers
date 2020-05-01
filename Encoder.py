@@ -1,7 +1,7 @@
 import importlib
 import numpy as np
 from checkerboard import Board, GameState, Checker, Square
-
+#By Kevin and Jude
 class Encoder:
     def name(self):
         raise NotImplementedError()
