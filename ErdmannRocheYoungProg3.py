@@ -3,6 +3,7 @@
 # Artificial Intelligence
 # Dr. Ed Kovach
 
+#By Kevin
 from checkertypes import Player
 from checkerboard import GameState
 import utils
