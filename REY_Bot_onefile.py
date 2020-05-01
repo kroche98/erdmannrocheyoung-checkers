@@ -561,9 +561,8 @@ class REY_Bot(Bot):
         return REY_Bot.move_to_tuple(move)
     
     def undo_last_move(self):
-        # we haven't applied the move yet, so we'll just wait
-        # until make_move gets called again
-        pass
+        # just reset temp_state
+        self.temp_state = self.game_state
 
     def receive_move(self, move):
         # first apply our last move
