@@ -5,6 +5,7 @@ from checkerboard import Move, GameState
 from keras import Sequential
 import pickle
 
+#By Kevin and Jude
 class DeepLearningAgent(Agent):
     #def __init__(self, model, encoder):
     def __init__(self):
