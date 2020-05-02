@@ -22,7 +22,7 @@ class Player(enum.Enum):
         return Player.white if self == Player.black else Player.black
 # end Player class
 
-
+#By Kevin
 class utils:
     _COLS = 'ABCDEFGH'
     _PIECE_TO_CHAR = {
