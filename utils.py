@@ -43,14 +43,17 @@ def board_repr(board):
 def print_board(board):
     print(board_repr(board))
 
-def print_move(player, move):
+def move_repr(player, move):
     if move.is_resign:
         move_str = ' resigns'
     else:
         jumps = move.jumps
-        move_str = ' moves' + square_to_coords(jumps[0].sq_from)
+        move_str = ' moves ' + square_to_coords(jumps[0].sq_from) + '->'
         move_str += '->'.join(square_to_coords(jump.sq_to) for jump in jumps)
     return _PLAYER_TO_NAME[player] + move_str
+
+def print_move(player, move):
+    print(move_repr(player, move))
 
 def move_from_coords(coords):
     if coords == 'R':

@@ -34,13 +34,13 @@ def play_game(player_1, player_2):
     utils.print_board(game.board)
     
     while not game.winner():
-        print(chr(27) + "[2J")
         if game.next_player == Player.black:
             move = player_1.select_move(game)
         else:
             move = player_2.select_move(game)
-        game = game.apply_move(move)
+        print(chr(27) + "[2J")
         utils.print_move(game.next_player, move)
+        game = game.apply_move(move)
         utils.print_board(game.board)
     print(f"Game over! {game.winner()} wins")
 

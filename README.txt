@@ -32,3 +32,7 @@ REY_Bot_onefile.py : a single file with everything necessary to play a game usin
 To run a game, run ErdmannRocheYoungProg3.py. By changing player_1 and player_2 in the main function, different agents can be pitted against each other.
 
 Currently the best bot is the MonteCarloCheckerBot. We've been working on a neural network bot, but it's not yet functional. Running generatemontecarlogames.py will generate training data and export it. Running networktrain.py will import the training data and train a model based on it, exporting this model for use by the bot. Unfortunately, the bot is not yet able to use this model to make predictions and select moves.
+
+----------
+
+Note that our internal representation uses Black and White. White is equivalent to Red.
