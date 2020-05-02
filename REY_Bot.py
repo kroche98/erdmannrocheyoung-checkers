@@ -5,6 +5,7 @@ from agents.dumb_checker_bot import DumbCheckerBot
 from agents.monte_carlo_checker_bot import MonteCarloCheckerBot
 import utils
 
+# By Kevin
 class REY_Bot(Bot):
     def __init__(self, color, agent):
         # color = Player.black if color=="black" else Player.white

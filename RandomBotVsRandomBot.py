@@ -1,11 +1,9 @@
-# from REY_Bot import REY_RandomBot
-# from REY_Bot import REY_MonteCarloBot
-from REY_Bot_onefile import REY_MonteCarloBot
+from REY_Bot import REY_RandomBot
+from REY_Bot import REY_MonteCarloBot
 import os
 import time
 
 class Controller:
-
     def __init__(self, black_bot, red_bot):
         self.red_bot = red_bot
         self.black_bot = black_bot
@@ -19,6 +17,7 @@ class Controller:
 
         while not move_is_valid:
             move = mover.make_move()
+            print(move)
 
             if move == "resign":
                 self.winner = reciever
@@ -26,6 +25,7 @@ class Controller:
 
             move_is_valid = reciever.receive_move(move)
             if not move_is_valid:
+                print(f"illegal move by {mover}!")
                 mover.undo_last_move()
 
         os.system("cls")
@@ -46,7 +46,7 @@ class Controller:
         input("Press a key to close")
 
 def main():
-    red_bot = REY_MonteCarloBot("red")
+    red_bot = REY_RandomBot("red")
     black_bot = REY_MonteCarloBot("black")
     controller = Controller(black_bot, red_bot)
     controller.run_game()
